@@ -2,7 +2,7 @@
 	
 	<?php echo $this->Form->create('Phonebooks.Phonebook'); ?>
 	
-		<?php if(CakePlugin::loaded('Media')) { echo $this->Element('Media.media_selector'); } ?>
+		<?php if(CakePlugin::loaded('Media')) { echo $this->Element('Media.media_selector', array('multiple' => false)); } ?>
 		
 		<?php if(!empty($this->request->data['Phonebook']['id'])) { echo $this->Form->input('Phonebook.id'); } ?>
 		

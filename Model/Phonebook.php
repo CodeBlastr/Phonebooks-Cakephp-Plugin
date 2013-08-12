@@ -138,7 +138,7 @@ class Phonebook extends PhonebooksAppModel {
 	    	$this->data['Phonebook']['user_id'] = $this->userId;
 	    }
     	return true;
-	}
+	} 
 	
 	public function __construct($id = false, $table = null, $ds = null) {
 		
