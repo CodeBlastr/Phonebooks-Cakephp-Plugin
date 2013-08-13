@@ -1,4 +1,4 @@
-Classifieds-Zuha-Cakephp-Plugin
-===============================
+Phonebooks-Zuha-Cakephp-Plugin
+==============================
 
-Simple Classified Listing Plugin.
+Phonebook and Directory Plugin for Zuha
