@@ -22,7 +22,7 @@
 		
 		<?php echo $this->Form->input('Phonebook.city'); ?>
 		
-		<?php echo $this->Form->input('Phonebook.state'); ?>
+		<?php echo $this->Form->input('Phonebook.state', array('type' => 'select', 'options' => states())); ?>
 		
 		<?php echo $this->Form->input('Phonebook.zip'); ?>
 	

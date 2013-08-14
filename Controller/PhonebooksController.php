@@ -37,7 +37,7 @@ class PhonebooksController extends PhonebooksAppController {
 		if (!$this->Phonebook->exists()) {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
-		$this->set('Phonebook', $this->Phonebook->read(null, $id));
+		$this->set('phonebook', $this->Phonebook->read(null, $id));
 	}
 
 /**
