@@ -25,6 +25,8 @@
 		<?php echo $this->Form->input('Phonebook.state', array('type' => 'select', 'options' => states())); ?>
 		
 		<?php echo $this->Form->input('Phonebook.zip'); ?>
+		
+		<?php echo $this->Form->input('PhonebookService.0.name'); ?>
 	
 	
 	<?php echo $this->Form->end('Save'); ?>

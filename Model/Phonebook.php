@@ -132,6 +132,15 @@ class Phonebook extends PhonebooksAppModel {
 			'order' => ''
 		)
 	);
+	public $hasMany = array(
+        'PhonebookService' => array(
+            'className' => 'Phonebooks.PhonebookService',
+            'conditions' => '',
+            'order' => ''
+        )
+    );
+	
+	
 	
 	public function beforeSave($options = array()) {
 	    if (empty($this->data['Phonebook']['user_id'])) {

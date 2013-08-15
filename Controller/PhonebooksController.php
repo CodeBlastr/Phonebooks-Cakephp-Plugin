@@ -51,7 +51,7 @@ class PhonebooksController extends PhonebooksAppController {
 		if ($this->request->is('post')) {
 			
 			$this->Phonebook->create();
-			if ($this->Phonebook->save($this->request->data)) {
+			if ($this->Phonebook->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The Phonebook has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
