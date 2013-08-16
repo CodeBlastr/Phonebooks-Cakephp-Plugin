@@ -26,7 +26,9 @@
 		
 		<?php echo $this->Form->input('Phonebook.zip'); ?>
 		
-		<?php echo $this->Form->input('PhonebookService.0.name'); ?>
+		<?php echo $this->Form->input('PhonebookService.0.name', array('label'=> 'Service Name')); ?>
+		
+		<?php echo $this->Form->input('PhonebookService.0.description', array('label'=> 'Service Description')); ?>
 	
 	
 	<?php echo $this->Form->end('Save'); ?>
