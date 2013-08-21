@@ -135,6 +135,7 @@ class Phonebook extends PhonebooksAppModel {
 	public $hasMany = array(
         'PhonebookService' => array(
             'className' => 'Phonebooks.PhonebookService',
+            'foreignKey' => 'phonebook_id',
             'conditions' => '',
             'order' => ''
         )
@@ -157,8 +158,22 @@ class Phonebook extends PhonebooksAppModel {
 		
 		if(CakePlugin::loaded('Categories')) {
 			$this->actsAs[] = 'Categories.Categorizable';
+			$this->hasAndBelongsToMany['Category'] = array(
+					'className' => 'Categories.Category',
+					'foreignKey' => 'foreign_key',
+					'associationForeignKey' => 'category_id',
+					'with' => 'Categories.Categorized'
+				);
 		}
-		
+		if(CakePlugin::loaded('Ratings')) {
+			$this->actsAs[] = 'Ratings.Ratable';
+			$this->hasAndBelongsToMany['Ratings'] = array(
+					'className' => 'Ratings.Rating',
+					'foreignKey' => 'foreign_key',
+					'associationForeignKey' => 'rate_id',
+					'with' => 'Ratings.Rating'
+				);
+		}
 		parent::__construct($id = false, $table = null, $ds = null);
 	}
 }

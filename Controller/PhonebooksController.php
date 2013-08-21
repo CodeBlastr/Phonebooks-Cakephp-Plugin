@@ -23,6 +23,7 @@ class PhonebooksController extends PhonebooksAppController {
  */
 	public function index() {
 		$this->Phonebook->recursive = 0;
+		$this->paginate['contain']['Categories'];
 		$this->set('phonebooks', $this->paginate());
 	}
 
@@ -33,11 +34,16 @@ class PhonebooksController extends PhonebooksAppController {
  * @return void
  */
 	public function view($id = null) {
-		$this->Phonebook->id = $id;
-		if (!$this->Phonebook->exists()) {
+		
+		if (!$this->Phonebook->exists($id)) {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
-		$this->set('phonebook', $this->Phonebook->read(null, $id));
+		
+		$this->set('Phonebook', $this->Phonebook->find('first', array(
+			'conditions' => array('id' => $id),
+			'contain' => array('Category', 'PhonebookService'),
+			)));
+		
 	}
 
 /**
@@ -57,6 +63,8 @@ class PhonebooksController extends PhonebooksAppController {
 			} else {
 				$this->Session->setFlash(__('The Phonebook could not be saved. Please, try again.'));
 			}
+			$categories = $this->Phonebook->Category->find('list');
+			$this->set('categories',$categories);
 		}
 	}
 
@@ -73,7 +81,7 @@ class PhonebooksController extends PhonebooksAppController {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Phonebook->save($this->request->data)) {
+			if ($this->Phonebook->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The Phonebook has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -82,6 +90,8 @@ class PhonebooksController extends PhonebooksAppController {
 		} else {
 			$this->request->data = $this->Phonebook->read(null, $id);
 		}
+		$categories = $this->Phonebook->Category->find('list');
+		$this->set('categories',$categories);
 	}
 
 /**

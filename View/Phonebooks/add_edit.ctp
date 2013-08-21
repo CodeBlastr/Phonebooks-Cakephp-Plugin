@@ -3,8 +3,10 @@
 	<?php echo $this->Form->create('Phonebooks.Phonebook'); ?>
 	
 		<?php if(CakePlugin::loaded('Media')) { echo $this->Element('Media.media_selector', array('multiple' => false)); } ?>
-		
+		<?php debug($categories); ?>
 		<?php if(!empty($this->request->data['Phonebook']['id'])) { echo $this->Form->input('Phonebook.id'); } ?>
+		
+		<?php if(CakePlugin::loaded('Categories')) {echo $this->Form->input('Category.Category',$categories, array('type'=>'checkbox'));} ?>
 		
 		<?php echo $this->Form->input('Phonebook.name'); ?>
 		
@@ -29,7 +31,7 @@
 		<?php echo $this->Form->input('PhonebookService.0.name', array('label'=> 'Service Name')); ?>
 		
 		<?php echo $this->Form->input('PhonebookService.0.description', array('label'=> 'Service Description')); ?>
-	
+		
 	
 	<?php echo $this->Form->end('Save'); ?>
 </div>
