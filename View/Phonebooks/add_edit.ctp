@@ -6,7 +6,7 @@
 		<?php debug($categories); ?>
 		<?php if(!empty($this->request->data['Phonebook']['id'])) { echo $this->Form->input('Phonebook.id'); } ?>
 		
-		<?php if(CakePlugin::loaded('Categories')) {echo $this->Form->input('Category.Category',$categories, array('type'=>'checkbox'));} ?>
+		<?php if(CakePlugin::loaded('Categories')) {echo $this->Form->input('Category.Category',$categories, array('type'=>'select'));} ?>
 		
 		<?php echo $this->Form->input('Phonebook.name'); ?>
 		

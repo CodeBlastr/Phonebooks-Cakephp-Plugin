@@ -25,6 +25,9 @@ class PhonebooksController extends PhonebooksAppController {
 		$this->Phonebook->recursive = 0;
 		$this->paginate['contain']['Categories'];
 		$this->set('phonebooks', $this->paginate());
+		$this->set('Phonebooks', $this->Phonebook->find('all', array(
+			'contain' => array('Category', 'PhonebookService'),
+			)));
 	}
 
 /**
