@@ -23,11 +23,45 @@ class PhonebooksController extends PhonebooksAppController {
  */
 	public function index() {
 		$this->Phonebook->recursive = 0;
-		$this->paginate['contain']['Categories'];
-		$this->set('phonebooks', $this->paginate());
-		$this->set('Phonebooks', $this->Phonebook->find('all', array(
-			'contain' => array('Category', 'PhonebookService'),
-			)));
+		$this->paginate['contain'][] = 'PhonebookService';
+		
+		if(CakePlugin::loaded('Categories')) {
+			$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => array('model' => 'Phonebook'))));
+			$this->paginate['contain'][] = 'Category';
+			if(isset($this->request->query['categories'])) {
+				$categories_param = explode(';', rawurldecode($this->request->query['categories']));
+				$this->set('selected_categories', json_encode($categories_param));
+				$joins = array(
+			           array('table'=>'categorized', 
+			                 'alias' => 'Categorized',
+			                 'type'=>'left',
+			                 'conditions'=> array(
+			                 	'Categorized.foreign_key = Phonebook.id'
+			           )),
+			           array('table'=>'categories', 
+			                 'alias' => 'Category',
+			                 'type'=>'left',
+			                 'conditions'=> array(
+			                 	'Category.id = Categorized.category_id'
+					   ))
+			         );
+				$this->paginate['joins'] = $joins;
+				$this->paginate['conditions'] = array('Category.name' => $categories_param);
+				$this->paginate['fields'] = array(
+							'DISTINCT Phonebook.id', 
+							'Phonebook.name', 
+							'Phonebook.address_1', 
+							'Phonebook.address_2',
+							'Phonebook.city',
+							'Phonebook.state',
+							'Phonebook.zip', 
+							'Phonebook.phone',
+							'Phonebook.email',
+							'Phonebook.website');
+			}
+		}
+		
+		$this->set('Phonebooks', $this->paginate());
 	}
 
 /**
