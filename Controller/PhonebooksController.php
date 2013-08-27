@@ -76,10 +76,10 @@ class PhonebooksController extends PhonebooksAppController {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
 		
-		$this->set('Phonebook', $this->Phonebook->find('first', array(
-			'conditions' => array('id' => $id),
-			'contain' => array('Category', 'PhonebookService'),
-			)));
+		$this->request->data = $this->Phonebook->find('first', array(
+			'conditions' => array('Phonebook.id' => $id),
+			'contain' => array('Category', 'PhonebookService', 'Answer'),
+			));
 		
 	}
 

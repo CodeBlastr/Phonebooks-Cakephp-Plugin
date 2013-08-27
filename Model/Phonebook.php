@@ -141,8 +141,6 @@ class Phonebook extends PhonebooksAppModel {
         )
     );
 	
-	
-	
 	public function beforeSave($options = array()) {
 	    if (empty($this->data['Phonebook']['user_id'])) {
 	    	$this->data['Phonebook']['user_id'] = $this->userId;
@@ -173,6 +171,15 @@ class Phonebook extends PhonebooksAppModel {
 					'associationForeignKey' => 'rate_id',
 					'with' => 'Ratings.Rating'
 				);
+		}
+
+		if(CakePlugin::loaded('Answers')) {
+			$this->belongsTo['Answer'] = array(
+		            'className' => 'Answers.Answer',
+		            'foreignKey' => 'answer_id',
+		            'type' => 'INNER',
+		            'dependent' => false
+		        );
 		}
 		parent::__construct($id = false, $table = null, $ds = null);
 	}

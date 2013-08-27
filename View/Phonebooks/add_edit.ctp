@@ -2,8 +2,8 @@
 	
 	<?php echo $this->Form->create('Phonebooks.Phonebook'); ?>
 	
-		<?php if(CakePlugin::loaded('Media')) { echo $this->Element('Media.media_selector', array('multiple' => false)); } ?>
-		<?php debug($categories); ?>
+		<?php if(CakePlugin::loaded('Media')) { echo $this->Element('Media.media_selector', array('media' => $this->request->data['Media'], 'multiple' => false)); } ?>
+		
 		<?php if(!empty($this->request->data['Phonebook']['id'])) { echo $this->Form->input('Phonebook.id'); } ?>
 		
 		<?php if(CakePlugin::loaded('Categories')) {echo $this->Form->input('Category.Category',$categories, array('type'=>'select'));} ?>
