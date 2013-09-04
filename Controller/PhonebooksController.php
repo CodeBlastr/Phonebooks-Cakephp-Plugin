@@ -24,7 +24,6 @@ class PhonebooksController extends PhonebooksAppController {
 	public function index() {
 		$this->Phonebook->recursive = 0;
 		$this->paginate['contain'][] = 'PhonebookService';
-		
 		if(CakePlugin::loaded('Categories')) {
 			$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => array('model' => 'Phonebook'))));
 			$this->paginate['contain'][] = 'Category';
