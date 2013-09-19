@@ -32,6 +32,8 @@
 		
 		<?php echo $this->Form->input('PhonebookService.0.description', array('label'=> 'Service Description')); ?>
 		
+		<?php echo $this->Form->input('PhonebookService.0.price', array('label'=> 'Service Price')); ?>
+		
 	
 	<?php echo $this->Form->end('Save'); ?>
 </div>
