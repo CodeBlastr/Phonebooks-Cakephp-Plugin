@@ -5,7 +5,7 @@ App::uses('PhonebooksAppController', 'Phonebooks.Controller');
  *
  * @property Phonebook $Phonebook
  */
-class PhonebooksController extends PhonebooksAppController {
+class _PhonebooksController extends PhonebooksAppController {
 
 /**
  * Helpers
@@ -195,4 +195,8 @@ class PhonebooksController extends PhonebooksAppController {
 		$this->set('locations', $this->Phonebook->find('all', array('conditions' => array('zip' => $zips))));
 	}
 	
+}
+
+if (!isset($refuseInit)) {
+	class PhonebooksController extends _PhonebooksController {}
 }
