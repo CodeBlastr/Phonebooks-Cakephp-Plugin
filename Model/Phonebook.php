@@ -15,8 +15,16 @@ class Phonebook extends PhonebooksAppModel {
 	public $displayField = 'name';
 	
 	public $useTable = 'phonebooks';
-	
-	public $actAs = array('Tree', 'MediaAttachable');
+        
+ /**
+  * Acts as
+  * 
+  * @var array
+  */
+    public $actsAs = array(
+        'Tree', 
+        'Galleries.Mediable' => array('modelAlias' => 'Phonebook'),
+		);
  	
 /**
  * Validation rules
@@ -27,26 +35,6 @@ class Phonebook extends PhonebooksAppModel {
 		'id' => array(
 			'uuid' => array(
 				'rule' => array('uuid'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'lft' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'rght' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
