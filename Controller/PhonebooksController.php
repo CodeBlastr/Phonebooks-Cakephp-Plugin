@@ -31,36 +31,36 @@ class _PhonebooksController extends PhonebooksAppController {
 				$categories_param = explode(';', rawurldecode($this->request->query['categories']));
 				$this->set('selected_categories', json_encode($categories_param));
 				$joins = array(
-			           array('table'=>'categorized', 
-			                 'alias' => 'Categorized',
-			                 'type'=>'left',
-			                 'conditions'=> array(
-			                 	'Categorized.foreign_key = Phonebook.id'
-			           )),
-			           array('table'=>'categories', 
-			                 'alias' => 'Category',
-			                 'type'=>'left',
-			                 'conditions'=> array(
-			                 	'Category.id = Categorized.category_id'
-					   ))
-			         );
+		           array('table'=>'categorized', 
+		                 'alias' => 'Categorized',
+		                 'type'=>'left',
+		                 'conditions'=> array(
+		                 	'Categorized.foreign_key = Phonebook.id'
+		           )),
+		           array('table'=>'categories', 
+		                 'alias' => 'Category',
+		                 'type'=>'left',
+		                 'conditions'=> array(
+		                 	'Category.id = Categorized.category_id'
+				   ))
+		         );
 				$this->paginate['joins'] = $joins;
 				$this->paginate['conditions'] = array('Category.name' => $categories_param);
 				$this->paginate['fields'] = array(
-							'DISTINCT Phonebook.id', 
-							'Phonebook.name', 
-							'Phonebook.address_1', 
-							'Phonebook.address_2',
-							'Phonebook.city',
-							'Phonebook.state',
-							'Phonebook.zip', 
-							'Phonebook.phone',
-							'Phonebook.email',
-							'Phonebook.website');
+					'DISTINCT Phonebook.id', 
+					'Phonebook.name', 
+					'Phonebook.address_1', 
+					'Phonebook.address_2',
+					'Phonebook.city',
+					'Phonebook.state',
+					'Phonebook.zip', 
+					'Phonebook.phone',
+					'Phonebook.email',
+					'Phonebook.website'
+				);
 			}
 		}
-		
-		$this->set('Phonebooks', $this->paginate());
+		$this->set('phonebooks', $this->paginate());
 	}
 
 /**
@@ -172,7 +172,7 @@ class _PhonebooksController extends PhonebooksAppController {
 		$url = 'http://zipcodedistanceapi.redline13.com/rest';
 		
 		if(!empty($query)) {
-				$zip = $query;
+			$zip = $query;
 		}
 		
 
