@@ -75,11 +75,10 @@ class _PhonebooksController extends PhonebooksAppController {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
 		
-		$this->request->data = $this->Phonebook->find('first', array(
+		$this->set('phonebook', $this->Phonebook->find('first', array(
 			'conditions' => array('Phonebook.id' => $id),
-			'contain' => array('Category', 'PhonebookService', 'Answer'),
-			));
-		
+			'contain' => array('Category', 'PhonebookService'),
+			)));
 	}
 
 /**
@@ -193,6 +192,43 @@ class _PhonebooksController extends PhonebooksAppController {
 		}
 		
 		$this->set('locations', $this->Phonebook->find('all', array('conditions' => array('zip' => $zips))));
+	}
+
+/**
+ * contact method
+ *
+ * @param string $id
+ * @return void
+ */
+	public function contact($id = null) {
+		$this->Phonebook->id = $id;
+		if (!$this->Phonebook->exists()) {
+			throw new NotFoundException(__('Invalid Listing'));
+		}
+		if ($this->request->is('post') || $this->request->is('push')) {
+			$phonebook = $this->Phonebook->find('first', array('conditions' => array('Phonebook.id' => $id), 'contain' => array('Creator')));
+			$email = $phonebook['Creator']['email'];
+			$subject = __('%s received response on %s', $phonebook['Phonebook']['name'], __SYSTEM_SITE_NAME);
+			$message = __('<p>Sender : %s</p><p>%s</p>', $this->request->data['Phonebook']['your_email'], strip_tags($this->request->data['Phonebook']['your_message']));
+			
+			if (!empty($email)) {
+				try {
+					$this->__sendMail($email, $subject, $message); 
+					$this->Session->setFlash('Message sent');
+					unset($this->request->data);
+				} catch (Exception $e) {
+					if (Configure::read('debug') > 0) {
+						$this->Session->setFlash($e->getMessage());
+					} else {
+						$this->Session->setFlash('Error, please try again later.');
+					}
+				}
+			} else {
+				$this->Session->setFlash('Creator is not accepting contacts via email.');
+			}
+		}
+		$this->Phonebook->contain(array('Category','Creator' => array('Gallery' => 'GalleryThumbnail')));
+		$this->set('phonebook', $this->Phonebook->read(null, $id));
 	}
 	
 }
