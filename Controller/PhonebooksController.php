@@ -86,11 +86,8 @@ class _PhonebooksController extends PhonebooksAppController {
  *
  * @return void
  */
-	public function add() {
-		$this->view = 'add_edit';
-		
+	public function add() {		
 		if ($this->request->is('post')) {
-			
 			$this->Phonebook->create();
 			if ($this->Phonebook->saveAll($this->request->data)) {
 				$this->Session->setFlash(__('The Phonebook has been saved'));
@@ -98,9 +95,9 @@ class _PhonebooksController extends PhonebooksAppController {
 			} else {
 				$this->Session->setFlash(__('The Phonebook could not be saved. Please, try again.'));
 			}
-			$categories = $this->Phonebook->Category->find('list');
-			$this->set('categories',$categories);
 		}
+
+		$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => array('Category.model' => 'Phonebook'))));
 	}
 
 /**
@@ -110,7 +107,6 @@ class _PhonebooksController extends PhonebooksAppController {
  * @return void
  */
 	public function edit($id = null) {
-		$this->view = 'add_edit';
 		$this->Phonebook->id = $id;
 		if (!$this->Phonebook->exists()) {
 			throw new NotFoundException(__('Invalid Phonebook'));
