@@ -25,11 +25,10 @@ class _PhonebooksController extends PhonebooksAppController {
 		$this->Phonebook->recursive = 0;
 		$this->paginate['contain'][] = 'PhonebookService';
 		if(CakePlugin::loaded('Categories')) {
-			$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => array('model' => 'Phonebook'))));
 			$this->paginate['contain'][] = 'Category';
 			if(isset($this->request->query['categories'])) {
-				$categories_param = explode(';', rawurldecode($this->request->query['categories']));
-				$this->set('selected_categories', json_encode($categories_param));
+				$categoriesParam = explode(';', rawurldecode($this->request->query['categories']));
+				$this->set('selected_categories', json_encode($categoriesParam));
 				$joins = array(
 		           array('table'=>'categorized', 
 		                 'alias' => 'Categorized',
@@ -45,7 +44,7 @@ class _PhonebooksController extends PhonebooksAppController {
 				   ))
 		         );
 				$this->paginate['joins'] = $joins;
-				$this->paginate['conditions'] = array('Category.name' => $categories_param);
+				$this->paginate['conditions'] = array('Category.name' => $categoriesParam);
 				$this->paginate['fields'] = array(
 					'DISTINCT Phonebook.id', 
 					'Phonebook.name', 
@@ -61,6 +60,10 @@ class _PhonebooksController extends PhonebooksAppController {
 			}
 		}
 		$this->set('phonebooks', $this->paginate());
+		
+		$conditions = !empty($categoriesParam) ? array('Category.model' => 'Phonebook', 'Category.name' => $categoriesParam) : array('Category.model' => 'Phonebook', 'Category.parent_id' => null);
+		$contain = !empty($categoriesParam) ? array('ChildCategory' => array('ChildCategory')) : array(); 
+		$this->set('categories', $this->Phonebook->Category->find('all', array('conditions' => $conditions, 'contain' => $contain)));
 	}
 
 /**
