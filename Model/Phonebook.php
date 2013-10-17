@@ -111,15 +111,16 @@ class Phonebook extends PhonebooksAppModel {
 					'with' => 'Categories.Categorized'
 				);
 		}
-		if(CakePlugin::loaded('Ratings')) {
-			$this->actsAs[] = 'Ratings.Ratable';
-			$this->hasAndBelongsToMany['Ratings'] = array(
-					'className' => 'Ratings.Rating',
-					'foreignKey' => 'foreign_key',
-					'associationForeignKey' => 'rate_id',
-					'with' => 'Ratings.Rating'
-				);
-		}
+		// we will not need this anymore
+		// if(CakePlugin::loaded('Ratings')) {
+			// $this->actsAs[] = 'Ratings.Ratable';
+			// $this->hasAndBelongsToMany['Ratings'] = array(
+					// 'className' => 'Ratings.Rating',
+					// 'foreignKey' => 'foreign_key',
+					// 'associationForeignKey' => 'rate_id',
+					// 'with' => 'Ratings.Rating'
+				// );
+		// }
 
 		if(CakePlugin::loaded('Answers')) {
 			$this->belongsTo['Answer'] = array(
