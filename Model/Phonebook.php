@@ -130,6 +130,6 @@ class Phonebook extends PhonebooksAppModel {
 		            'dependent' => false
 		        );
 		}
-		parent::__construct($id = false, $table = null, $ds = null);
+		parent::__construct($id, $table, $ds);
 	}
 }
