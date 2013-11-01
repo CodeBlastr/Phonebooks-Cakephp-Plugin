@@ -5,7 +5,7 @@ App::uses('PhonebooksAppController', 'Phonebooks.Controller');
  *
  * @property Phonebook $Phonebook
  */
-class _PhonebooksController extends PhonebooksAppController {
+class AppPhonebooksController extends PhonebooksAppController {
 
 /**
  * Helpers
@@ -233,5 +233,5 @@ class _PhonebooksController extends PhonebooksAppController {
 }
 
 if (!isset($refuseInit)) {
-	class PhonebooksController extends _PhonebooksController {}
+	class PhonebooksController extends AppPhonebooksController {}
 }
