@@ -40,9 +40,7 @@
 
 	<div class="row-fluid">
 		<div class="span4">
-			<?php if (CakePlugin::loaded('Categories')) : ?>
-				<?php echo $this->Form->input('Category.Category', array('type' => 'radio', 'legend' => false, 'class' => 'input-medium', 'options' => $categories, 'limit' => 3)); ?>
-			<?php endif; ?>
+			<?php echo CakePlugin::loaded('Categories') ? $this->Form->input('Category.Category', array('multiple' => 'checkbox', 'legend' => false, 'class' => 'input-medium', 'label' => $categoryLabel[key($categoryLabel)], 'options' => $categories, 'limit' => 3)) : null; ?>
 		</div>
 		<div class="span4">
 			<?php echo $this->Form->input('Phonebook.state', array('type' => 'select', 'options' => states(), 'class' => 'input-medium')); ?>

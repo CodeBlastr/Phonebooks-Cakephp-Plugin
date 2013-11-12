@@ -26,6 +26,7 @@ class AppPhonebooksController extends PhonebooksAppController {
 		$this->paginate['contain'][] = 'PhonebookService';
 		if(CakePlugin::loaded('Categories')) {
 			$this->paginate['contain'][] = 'Category';
+			
 			if(isset($this->request->query['categories'])) {
 				$categoriesParam = explode(';', rawurldecode($this->request->query['categories']));
 				$this->set('selected_categories', json_encode($categoriesParam));
@@ -59,6 +60,15 @@ class AppPhonebooksController extends PhonebooksAppController {
 				);
 			}
 		}
+		if(isset($this->request->query['q'])) {
+			$this->set('title_for_layout', $this->request->query['q'] . ' < ' . __('Phonebooks') . ' | ' . __SYSTEM_SITE_NAME);
+			//$categoriesParam = explode(';', rawurldecode($this->request->query['categories']));
+			//$this->paginate['conditions']['Category.name'] = $categoriesParam;
+			$this->paginate['conditions']['OR'] = array(
+				'Phonebook.name LIKE' => '%' . $this->request->query['q'] . '%',
+				'Phonebook.description' => '%' . $this->request->query['q'] . '%'
+			);
+		}
 		$this->set('phonebooks', $this->paginate());
 		
 		$conditions = !empty($categoriesParam) ? array('Category.model' => 'Phonebook', 'Category.name' => $categoriesParam) : array('Category.model' => 'Phonebook', 'Category.parent_id' => null);
@@ -89,7 +99,7 @@ class AppPhonebooksController extends PhonebooksAppController {
  *
  * @return void
  */
-	public function add() {		
+	public function add($parentCategoryId = null) {		
 		if ($this->request->is('post')) {
 			$this->Phonebook->create();
 			if ($this->Phonebook->saveAll($this->request->data)) {
@@ -99,8 +109,10 @@ class AppPhonebooksController extends PhonebooksAppController {
 				$this->Session->setFlash(__('The Phonebook could not be saved. Please, try again.'));
 			}
 		}
-
-		$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => array('Category.model' => 'Phonebook'))));
+		$categoryLabel = !empty($parentCategoryId) ? $this->Phonebook->Category->find('list', array('conditions' => array('Category.id' => $parentCategoryId))) : array('Category');
+		$this->set(compact('categoryLabel'));
+		$conditions = !empty($parentCategoryId) ? array('Category.model' => 'Phonebook', 'Category.parent_id' => $parentCategoryId) : array('Category.model' => 'Phonebook'); // $parentCategoryId used in bakken
+		$this->set('categories', $this->Phonebook->Category->find('list', array('conditions' => $conditions)));
 	}
 
 /**
