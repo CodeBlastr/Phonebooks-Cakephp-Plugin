@@ -6,7 +6,7 @@
 			<?php echo $this->Form->input('Phonebook.name'); ?>
 		</div>
 		<div class="span6">
-			<?php echo $this->Form->input('GalleryImage.filename', array('type' => 'file')); ?>
+			<?php echo CakePlugin::loaded('Media') ? $this->Element('Media.selector', array('media' => $this->request->data['Media'], 'multiple' => false)) : null; ?>
 		</div>
 	</div>
 

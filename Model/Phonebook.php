@@ -54,7 +54,7 @@ class Phonebook extends PhonebooksAppModel {
 		),
 		'phone' => array(
 			'phone' => array(
-				'rule' => array('phone'),
+				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -100,6 +100,21 @@ class Phonebook extends PhonebooksAppModel {
 		
 		if(CakePlugin::loaded('Media')) {
 			$this->actsAs[] = 'Media.MediaAttachable';
+		}
+
+		if (CakePlugin::loaded('Maps')) {
+			$this->actsAs['Maps.Mapable'] = array(
+				'modelAlias' => 'Phonebook',
+				'markerTextField' => 'description',
+				'streetField' => 'address_1',
+				'cityField' => 'city',
+				'stateField' => 'state',
+				'countryField' => null,
+				'postalField' => 'zip',
+				'addressField' => array('address_1', 'address_2', 'city', 'state', 'zip'),
+				'markerTextField' => 'description',
+				'searchTagsField' => 'description'
+			);
 		}
 		
 		if(CakePlugin::loaded('Categories')) {
