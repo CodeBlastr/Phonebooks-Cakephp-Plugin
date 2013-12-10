@@ -24,7 +24,7 @@ class AppPhonebooksController extends PhonebooksAppController {
 	public function index() {
 		$this->Phonebook->recursive = 0;
 		$this->paginate['contain'][] = 'PhonebookService';
-		if(CakePlugin::loaded('Categories')) {
+		if (CakePlugin::loaded('Categories')) {
 			$this->paginate['contain'][] = 'Category';
 			
 			if(isset($this->request->query['categories'])) {
@@ -60,14 +60,20 @@ class AppPhonebooksController extends PhonebooksAppController {
 				);
 			}
 		}
-		if(isset($this->request->query['q'])) {
-			$this->set('title_for_layout', $this->request->query['q'] . ' < ' . __('Phonebooks') . ' | ' . __SYSTEM_SITE_NAME);
-			//$categoriesParam = explode(';', rawurldecode($this->request->query['categories']));
-			//$this->paginate['conditions']['Category.name'] = $categoriesParam;
-			$this->paginate['conditions']['OR'] = array(
-				'Phonebook.name LIKE' => '%' . $this->request->query['q'] . '%',
-				'Phonebook.description' => '%' . $this->request->query['q'] . '%'
-			);
+		if (!empty($this->request->query['q'])) {
+			$this->set('title_for_layout', $this->request->query['q'] . ' | ' . __SYSTEM_SITE_NAME);
+			$this->paginate['conditions']['OR']['Phonebook.name LIKE'] = '%' . $this->request->query['q'] . '%';
+			$this->paginate['conditions']['OR']['Phonebook.description LIKE'] = '%' . $this->request->query['q'] . '%';
+			$this->paginate['conditions']['OR']['Phonebook.search_tags LIKE'] = '%' . $this->request->query['q'] . '%';
+		}
+		unset($this->request->query['q']);
+		unset($this->request->query['categories']);
+		if (!empty($this->request->query)) {
+			foreach($this->request->query as $field => $value) {
+				if (!empty($value)) {
+					$this->paginate['conditions']['OR']['Phonebook.' . $field . ' LIKE'] = '%' . $value . '%';
+				}
+			}
 		}
 		$this->set('phonebooks', $this->paginate());
 		
@@ -83,15 +89,14 @@ class AppPhonebooksController extends PhonebooksAppController {
  * @return void
  */
 	public function view($id = null) {
-		
 		if (!$this->Phonebook->exists($id)) {
 			throw new NotFoundException(__('Invalid Phonebook'));
 		}
-		
-		$this->set('phonebook', $this->Phonebook->find('first', array(
+		$this->set('phonebook', $this->request->data = $this->Phonebook->find('first', array(
 			'conditions' => array('Phonebook.id' => $id),
 			'contain' => array('Category', 'PhonebookService'),
 			)));
+		return $this->request->data;
 	}
 
 /**
@@ -240,6 +245,30 @@ class AppPhonebooksController extends PhonebooksAppController {
 		}
 		$this->Phonebook->contain(array('Category','Creator' => array('Gallery' => 'GalleryThumbnail')));
 		$this->set('phonebook', $this->Phonebook->read(null, $id));
+	}
+
+
+/**
+ * This is only used on Roameroo currently.
+ * If you update this, please copy the original to Roameroo first.
+ */
+	public function tasks($id) {
+		// get task list w/ tasks w/ phonebooks
+		$this->loadModel('Tasks.Task');
+		$taskList = $this->Task->find('first', array(
+			'conditions' => array(
+				'Task.id' => $id
+			),
+			'contain' => array('ChildTask')
+		));
+	}
+
+/**
+ * This is only used on Roameroo currently.
+ * If you update this, please copy the original to Roameroo first.
+ */
+	public function task($id) {
+		
 	}
 	
 }
