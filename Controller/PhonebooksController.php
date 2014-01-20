@@ -72,6 +72,7 @@ class AppPhonebooksController extends PhonebooksAppController {
 			foreach($this->request->query as $field => $value) {
 				if (!empty($value)) {
 					$this->paginate['conditions']['OR']['Phonebook.' . $field . ' LIKE'] = '%' . $value . '%';
+					$this->paginate['conditions']['OR']['Phonebook.search_tags LIKE'] = '%' . $value . '%';
 				}
 			}
 		}
