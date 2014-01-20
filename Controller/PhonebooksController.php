@@ -141,7 +141,7 @@ class AppPhonebooksController extends PhonebooksAppController {
 			}
 		} else {
 			$this->request->data = $this->Phonebook->read(null, $id);
-		}
+		}		
 		$categories = $this->Phonebook->Category->find('list');
 		$this->set('categories',$categories);
 	}
