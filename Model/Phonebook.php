@@ -4,7 +4,7 @@ App::uses('PhonebooksAppModel', 'Phonebooks.Model');
  * Directory Model
  *
  */
-class Phonebook extends PhonebooksAppModel {
+class AppPhonebook extends PhonebooksAppModel {
 	
 	public $name = 'Phonebook';
 /**
@@ -13,9 +13,9 @@ class Phonebook extends PhonebooksAppModel {
  * @var string
  */
 	public $displayField = 'name';
-	
+
 	public $useTable = 'phonebooks';
-        
+
  /**
   * Acts as
   * 
@@ -147,4 +147,8 @@ class Phonebook extends PhonebooksAppModel {
 		}
 		parent::__construct($id, $table, $ds);
 	}
+}
+
+if (!isset($refuseInit)) {
+	class Phonebook extends AppPhonebook {}
 }
