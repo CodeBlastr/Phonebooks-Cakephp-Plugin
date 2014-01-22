@@ -76,7 +76,7 @@ class AppPhonebooksController extends PhonebooksAppController {
 				}
 			}
 		}
-		$this->set('phonebooks', $this->paginate());
+		$this->set('phonebooks', $this->request->data = $this->paginate());
 		
 		$conditions = !empty($categoriesParam) ? array('Category.model' => 'Phonebook', 'Category.name' => $categoriesParam) : array('Category.model' => 'Phonebook', 'Category.parent_id' => null);
 		$contain = !empty($categoriesParam) ? array('ChildCategory' => array('ChildCategory')) : array(); 
@@ -109,10 +109,10 @@ class AppPhonebooksController extends PhonebooksAppController {
 		if ($this->request->is('post')) {
 			$this->Phonebook->create();
 			if ($this->Phonebook->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The Phonebook has been saved'));
+				$this->Session->setFlash(__('Saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The Phonebook could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('Could not be saved. Please, try again.'));
 			}
 		}
 		$categoryLabel = !empty($parentCategoryId) ? $this->Phonebook->Category->find('list', array('conditions' => array('Category.id' => $parentCategoryId))) : array('Category');
@@ -134,10 +134,10 @@ class AppPhonebooksController extends PhonebooksAppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Phonebook->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The Phonebook has been saved'));
+				$this->Session->setFlash(__('Saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The Phonebook could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('Could not be saved. Please, try again.'));
 			}
 		} else {
 			$this->request->data = $this->Phonebook->read(null, $id);
@@ -158,13 +158,13 @@ class AppPhonebooksController extends PhonebooksAppController {
 		}
 		$this->Phonebook->id = $id;
 		if (!$this->Phonebook->exists()) {
-			throw new NotFoundException(__('Invalid Phonebook'));
+			throw new NotFoundException(__('Invalid'));
 		}
 		if ($this->Phonebook->delete()) {
-			$this->Session->setFlash(__('Phonebook deleted'));
+			$this->Session->setFlash(__('Deleted'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Phonebook was not deleted'));
+		$this->Session->setFlash(__('Error deleting, please try again.'));
 		$this->redirect(array('action' => 'index'));
 	}
 
